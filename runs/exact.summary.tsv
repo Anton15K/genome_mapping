@@ -1,0 +1,11 @@
+reads	22720100
+mapped	19387428
+unique	19029881
+multi	357547
+unmapped	3332672
+mapped_percent	85.331614
+unique_percent_all	83.757910
+multi_percent_all	1.573703
+covered_percent	98.389841
+mean_depth	409.980778
+elapsed_seconds	53.973176
