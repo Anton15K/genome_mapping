@@ -1,10 +1,10 @@
 # Genome mapping
 
-- **Method:** Ukkonen suffix tree, reverse-complement search, and difference-array coverage.
-- **Threshold:** Mapped means at least one full-read exact match (0 edits) on either strand. Reads containing `N` are unmapped.
-- **Alignment quality:** Accepted alignments have 100% identity, with no mismatches or gaps. No MAPQ is estimated.
-- **Optimality:** Exhaustive exact search in the linear reference; accepted alignments have minimum edit distance 0. Multiple matches remain ambiguous.
-- **Coverage:** Unique mappings only; duplicate reads retained. Mean depth includes uncovered bases.
+- **Method:** Ukkonen suffix tree, three exact seeds, bounded edit-distance verification, reverse-complement search, and difference-array coverage.
+- **Threshold:** Full-read alignments with at most 2 substitutions, insertions, or deletions on either strand. Reads containing `N` are unmapped.
+- **Alignment quality:** Lowest edit distance wins; distinct reference intervals tied at that distance are multi-mapped. No MAPQ is estimated.
+- **Optimality:** Exhaustive best-match search within 2 edits in the linear reference, seed hits are not capped.
+- **Coverage:** Unique best-score reference spans only, including reference deletions, duplicate reads retained. Mean depth includes uncovered bases.
 
 Run from the repository directory: `make && ./bin/map_reads`.
 
@@ -12,14 +12,14 @@ Recorded result (mapping percentages use all processed reads):
 
 ```text
 reads	22720100
-mapped	19387428
-unique	19029881
-multi	357547
-unmapped	3332672
-mapped_percent	85.331614
-unique_percent_all	83.757910
-multi_percent_all	1.573703
-covered_percent	98.389841
-mean_depth	409.980778
-elapsed_seconds	53.973176
+mapped	21698911
+unique	21042014
+multi	656897
+unmapped	1021189
+mapped_percent	95.505350
+unique_percent_all	92.614091
+multi_percent_all	2.891259
+covered_percent	98.396304
+mean_depth	453.329660
+elapsed_seconds	69.010880
 ```

@@ -19,9 +19,10 @@ inline int id(char c) {
 }
 
 struct Hit {
-    int count, pos;
+    int count, pos, end, edits;
 
-    Hit(int count = 0, int pos = -1) : count(count), pos(pos) {}
+    Hit(int count = 0, int pos = -1, int end = -1, int edits = 0)
+        : count(count), pos(pos), end(end), edits(edits) {}
 };
 
 struct Node {
@@ -122,9 +123,35 @@ struct Tree {
                 ++j;
                 ++i;
             }
-            if (i == m) return t[u].r == n ? Hit(1, start) : Hit(2);
+            if (i == m) return t[u].r == n ? Hit(1, start, start + m) : Hit(2);
         }
         return Hit();
+    }
+
+    void find_all(const string& a, vector<int>& hits) const {
+        hits.clear();
+        int u = 0, i = 0, depth = 0;
+        while (i < (int)(a.size())) {
+            int c = id(a[i]);
+            if (c < 1 || c > 4) return;
+            u = t[u].next[c];
+            if (u == -1) return;
+            for (int j = t[u].l; j < t[u].r && i < (int)(a.size()); ++j, ++i) {
+                if (s[j] != a[i] || a[i] == 'N') return;
+            }
+            depth += t[u].r - t[u].l;
+        }
+        vector<pair<int, int>> stack = {{u, depth}};
+        while (!stack.empty()) {
+            auto [v, len] = stack.back();
+            stack.pop_back();
+            if (t[v].r == (int)(s.size())) hits.push_back((int)(s.size()) - len);
+            else {
+                for (int next : t[v].next) {
+                    if (next != -1) stack.push_back({next, len + t[next].r - t[next].l});
+                }
+            }
+        }
     }
 
 };
